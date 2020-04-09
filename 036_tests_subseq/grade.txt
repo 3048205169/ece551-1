@@ -1,0 +1,93 @@
+Grading at 09/17/2019:10:15:01.074100
+For commit ID 16f7bb98c6d920aa724dccc8df69a763ad38a98e
+Grading at Tue Sep 17 06:15:00 EDT 2019
+**Testing broken implementation 10 **
+-------------------------------------
+
+expect 0, got 0
+expect 3, got 3
+expect 1, got 1
+expect 1, got 2
+found a bug ! , n = 2
+
+**Testing broken implementation 11 **
+-------------------------------------
+
+expect 0, got 0
+expect 3, got 4
+found a bug ! , n = 5
+
+**Testing broken implementation 1 **
+-------------------------------------
+
+expect 0, got 0
+expect 3, got 3
+expect 1, got 3
+found a bug ! , n = 3
+
+**Testing broken implementation 2 **
+-------------------------------------
+
+expect 0, got 1
+found a bug ! , n = 0
+
+**Testing broken implementation 3 **
+-------------------------------------
+
+expect 0, got 0
+expect 3, got 4
+found a bug ! , n = 5
+
+**Testing broken implementation 4 **
+-------------------------------------
+
+expect 0, got 1
+found a bug ! , n = 0
+
+**Testing broken implementation 5 **
+-------------------------------------
+
+expect 0, got 0
+expect 3, got 5
+found a bug ! , n = 5
+
+**Testing broken implementation 6 **
+-------------------------------------
+
+expect 0, got 0
+expect 3, got 2
+found a bug ! , n = 5
+
+**Testing broken implementation 7 **
+-------------------------------------
+
+expect 0, got 0
+expect 3, got 18446744073709551615
+found a bug ! , n = 5
+
+**Testing broken implementation 8 **
+-------------------------------------
+
+expect 0, got 0
+expect 3, got 1
+found a bug ! , n = 5
+
+**Testing broken implementation 9 **
+-------------------------------------
+
+expect 0, got 0
+expect 3, got 2
+found a bug ! , n = 5
+
+**Testing correct implementation **
+-------------------------------------
+
+expect 0, got 0
+expect 3, got 3
+expect 1, got 1
+expect 1, got 1
+expect 5, got 5
+
+All test programs were handled correctly
+
+Overall Grade: PASSED

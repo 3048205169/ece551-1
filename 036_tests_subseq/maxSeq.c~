@@ -1,0 +1,14 @@
+#include <stddef.h>
+size_t maxSeq(int * array, size_t n){
+  size_t answer=1;
+  size_t i=0;
+  for(size_t j=1;j<n;j++){
+    if(j==n-1||array[j]>array[j-1]){
+      if(j-i+1>answer){
+	answer=j-i+1;
+	i=j;
+      }
+    }
+  }
+  return answer;
+}

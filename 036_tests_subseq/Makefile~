@@ -1,0 +1,2 @@
+test: maxSeq.c test-subseq.c
+	gcc -Wall -o test maxSeq.c test-subseq.c
