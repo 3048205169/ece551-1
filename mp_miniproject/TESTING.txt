@@ -1,0 +1,708 @@
+I did not instal pipeline, step1 step2 and step 3 are include in Testing
+
+start by running ./shell
+
+(1) Run
+    You will see the shell is waiting for your input
+
+(2) Run
+    /bin/ls
+    
+    You will see the content in this directory and also the ouput :"Program was successful"
+    This is because /bin/ls is an absoulte path so it will show the content of this directory
+
+(3) Run
+    nothing
+
+    For this step, you just input nothing and press enter, you will see nothing happen,it will show ffosh:/home/cy146/ece551/mp_miniproject$ again and wait for your input
+    This is because nothing will be execute
+
+(4) Run
+    space
+
+    For this step you need to enter some space character in the shell and you will find it will do nothing and re-output the prompt again and wait for your input
+    This is because after you input only space, they will be treat as you input nothing
+
+(5) Run
+    erejiwoefe
+
+    This step, you need to enter some odd thing
+    it will show erejiwoefe not find and wait for your input again
+
+(6) Run
+    exit
+
+    this step you need to enter the exit to exit the program 
+    after you enter the exit the program will exit successfully
+
+(7) Run
+    ./seg
+
+    this step you execute a segmentation fault program write by myself and you will see "Terminated by signal 11"
+    This is because the program will terminate because it is a seg program
+
+(8) Run
+    ./shell
+
+    this step you need execute ./shell
+    it will show Terminated by signal 11
+    this is because you can not execute this program another time
+
+(9) Run
+    ./a.out 2
+
+    for this step you execute the program write by myself
+    you will get "There are total 2 arguments Program was successful" and wait for input again
+
+(10) Run
+     ./bin/ls
+
+     for this step you execute space and then ./bin/ls
+     you will get a right answer
+(11) Run
+     ls
+
+     for this step you execute ls
+     you can see the content in this folder and program was successful
+     this is because myShell could find the ls in the ECE551Path and check if i	    t have a executable program, then it find /bin/ls and execute it
+
+(12) Run
+     sddfje
+
+     it will show
+     sddfje not found
+
+     for this step you execute a sequence of random words
+     you can see it will show sddfje not found
+     this is because myShell would search for the ECE551PATH and could not find that so it will show not find
+
+(13) Run
+     s bb e d
+
+     for this step you can execute these words will space between them
+     you can see only shows s not found
+     this is because it will only tell the command not found which is the first	argument in the command
+
+(14) Run
+     ./TESTING.txt
+
+     it will show:
+     Execute Error
+     Program failed with code 1
+
+     This is because ./TESTING.txt is not executable  
+
+
+(15) Run
+
+     echo hello world
+
+     it will show:
+
+     hello world
+     Program was successful
+
+     This is useful for step3 testing.
+
+(16) Run
+     ./a.out 1   2  3
+     for this step you execute a.out with three argument
+     it will show below:
+
+     ./a.out
+     1
+     2
+     3
+     There are total 4 arguments
+     Program was successful
+
+     this is right, a.out is a program write by myself it can read the argumens and output them with total numbers of arguments,so for this command it has four arguments are seperated with each other with space
+
+
+(17) Run
+     ./a.out "a b" c "def ghi"
+
+     for this step you can execute ./a.out with quotation and space
+     it will show:
+
+     ./a.out
+     a b
+     c
+     def ghi
+
+     There are total 4 arguments
+     Program was successful
+     this is right, because a and b are quote with quotation, so they are 1 arguments,c is seperate with space, so c is another arguments def ghi are one argument seperate by quotation
+
+(18) Run
+     ./a.out "\"hello world\"" "a\\b\\c d\\"
+
+     fot this step is the example in the readme
+     it will show:
+     ./a.out
+     "hello world"
+     a\b\c d\
+     There are total 3 arguments
+     Program was successful
+     this answer is same as the answer in the readme, because\\ means \, \" means " and they are seperated with quotation, so there are total 3 arguments
+
+(19) Run
+
+     ./a.out \"hello world
+     it will show:
+     ./a.out
+     "hello
+     world
+     There are total 3 arguments
+     Program was successful
+
+     This is correct because for my implementation \" will turn '"' into character, so the first parameter is "hello.
+(20) Run
+     ./a.out "\"hello \h\jworld\""
+
+     for this step you include \h in the quotation in the command
+     it will show:
+
+     ./a.out
+     "hello \h\jworld"
+     There are total 2 arguments
+     Program was successful
+     
+     this answer is correct, because when in the quotation, only \" and \\ will change to " and \, other cases \ is just \, it will not affect other character
+
+(21) Run
+     ./a.out "hhello
+
+     for this step you just type one quotation,
+     it will show:
+
+     Please have an unclosed quotation and wait for your input 
+
+     this is correct because if quotation is not matched, it will not execute that
+
+(22) Run
+     ./a.out """
+     
+     for this step you can enter three quotation
+     it will show:
+
+     Please have an unclosed quotation
+     this is correct because it quotation is not match.
+
+(23) Run
+     ./a.out ""
+
+     for this step you enter two quotation as the parameter
+     it will show:
+
+     ./a.out
+     There are total 1 arguments
+     Program was successful
+
+     I am doing this  because two "" means there is nothing for the second parameter
+
+(24) Run
+
+     ./a.out "a""b"
+
+     it will show:
+     ./a.out
+     a
+     b
+     There are total 3 arguments	
+     Program was successful
+
+     This is because for my implementation I will treat quotation as seperation, so even if there is no space between "a""b", they are also treat as seperate parameter
+
+(25) Run
+     ./a.out "b"hdjs"js"
+
+     it will show:
+
+     ./a.out	
+     b
+     hdjs
+     js
+     There are total 4 arguments
+     Program was successful
+
+     This is because for my implementation "b" will be the first argument, then hdjs will be the second one this is because they are seperate with quotation, then js will be the third parameter.
+     
+(26) Run
+
+     ./a.out """hfhjhs"jeio\\\\
+
+     it will show:
+     ./a.out 
+     hfhjhs
+     jeio\\
+     There are total 3 arguments
+     Program was successful
+
+     This is because for the first two quotation "" this means nothing,so the first parameter will be "hfhjhs" and the second parameter will be jeio\\, this is because when outside the quotation \\ will change into one \
+
+(27) Run
+
+     ./a.out \\\ """\\"""
+     then it will show:
+     ./a.out
+     \
+     \
+     There are total 3 arguments
+     Program was successful
+
+     This is because for my implementation \\\means \and space, so the first argument is \, which is correct, then """\\""" means "" then "\" and "", so there are only 3 arguments.
+     
+(28) Run
+     ./a.out \h\e\l\l\o     "\"\\\""
+
+     for this step , you can execute last line
+     it will show:
+
+     ./a.out
+     hello
+     "\"
+     There are total 3 arguments
+     Program was successful
+
+     I am doing this because for \h\e\l\l\o, \is not in the quotation so all \ will disappear, when in the quotation only \\ and \" will work, so it show like this
+
+(29) Run
+
+     "he\llo\\\"
+
+     it will show:
+     Please have an unclosed quotation
+
+     It seems that it has two quotations, while actually the second quotation is changed by the \ before it, so the the last quotation is actually a character '"', so this command lack one quotation  
+
+(30) Run
+     cd
+
+     it shows:
+     Command is not correct
+
+     This is because , I will check if parameter number is correct, so if there is no parameter or more than 2 parameter, myshell will say command is not correct
+     
+(31) Run
+     cd shell
+
+     it will show:
+     Change directory failor
+
+     this is correct, because shell is not a directory so it cannnot change it
+
+(32) Run
+     cd ~
+
+     it will show:
+     ffosh:/home/cy146$:
+
+     I am doing this  because I set home/cy146 as home, so it is resonable, which is also the same as my real shell implementation.
+
+(33) Run
+
+     cd ~
+     cd ece551
+
+     it will show:
+     ffosh:/home/cy146/ece551$
+
+     This is because after you change directory to home, you cd ece551 it will change directory in ece551
+(34) Run
+     cd /
+
+     it will show :
+     ffosh:/$
+
+     this is correct, because cd / will go to the root directory
+
+(35) Run
+     cdhome/
+
+     it will show:cdhome/ not found
+
+     this is correct, because if you want to change directory you need to seperate them with space or else it will not work
+
+(36) Run
+     cd home/
+
+     it will show:
+     ffosh:/home$
+
+     this is correct.
+
+(37) Run
+     cd ..
+
+     it will show:
+     ffosh:/$
+
+     this is correct, because .. will go to parent directory
+
+(38) Run
+     cd hello world
+
+     it will show:
+     Command is not correct
+
+     this is correct because you can only enter 2 parameter to change the directory
+
+(39) Run
+     set x hello
+     then:
+     echo $x
+
+     it will show:
+     hello
+     Program was successful
+
+     This is correct, because after I set x equals to hello, it should record this pairs in the vars which is a vector to store all the vars variable. And then after you execute echo $x, it could resolve it as hello.
+(40) Run
+
+     set Ha_ha hello
+     then:
+     echo $Ha_ha
+
+     it will show:
+     hello
+     Program was successful
+
+(41) Run
+
+     set a
+
+     it will show:
+     Variable format is illegal
+     this is because you at least need 3 parameters to set variable.So this is not a legal format
+
+(42) Run
+
+     set a hello
+     then:
+     echo $$$a
+
+     it will show:
+     hello
+
+     This is because,my implemetation will change $$$a into $a, it will find '$' first and remove it and seperate it, $$$a will turn into a. As a result of there is no character between $$$, so it will become just a and parse a.
+
+(43) Run
+
+     $helloworld
+     it will show:
+     helloworld not found
+
+     this is because for now helloworld is not a variable name, and my '$' will just do nothing but remove '$', if I cannot find variable in the variable vector
+     
+(44) Run
+
+     set a helloworld
+     echo $seja
+
+     it will show:
+     seja
+     Program was successful
+
+     This is because,when using '$', my implementation will read from left to right,until it met an illegal charater such as '*'or '%', so when execute echo $seja, my parsing will first remove '$', and read 'seja' into it and could not find a variable called 'seja', so it just show seja
+
+(45) Run
+
+     set a heo\\llo world"""  "
+     then:
+     echo $a
+
+     It will show:
+     heo\\llo world"""  "
+     Program was successful
+
+     This is because for my implementation I will give all the characters to variable, no matter it include space or quotation, so I will assume that all the character except varibale are given to variable
+
+(46) Run
+
+     set a hello
+     set ab world
+
+     then:
+     echo $a$ab
+
+     it will show:
+
+     helloworld
+
+     This is correct,because a equals to hello and b equals to world
+     
+(47) Run
+     
+     set "a" hello world
+     then:
+     echo $a$"a"
+
+     you will get
+
+     hello worldhello world
+     Program was successful
+
+     This is because my implementation will first parse the in put argument, so set "a" hello world equals to set a hello world, and also for my set function, all the remaing charater will et to the variable, no matter it has space or \. and also when you execute echo$a$"a", these is actually two same a, because for my implementation I will parse the input and remove the quotation like step 2.
+
+(48) Run
+
+     set a&e hell
+
+     then you will get:
+     Variable format is illegal
+
+     Because  the variable name could only include '_'or word or numbers.
+
+(49) Run
+
+     set a hes
+     then you execute:
+     echo $a-$abc
+
+     then you will get:
+     hes-abc
+     Program was successful
+
+     this is correct beacuse, first I already set a hello world, this step I can re-set a with hes, when you execute $a-$abc, the first you will get hes- because '-' is not a legal charater, so $a- can resolve the a to "hes" and "-", next one $abc, because abc are all legal words, so my shell will only check abc and find nothing so it just shows abc
+
+(50) Run
+
+     echo $ a
+
+     then it will show:
+      a
+     Program was successful
+
+     This is because for my implementation it will parse the commands first, so it will be seperate into three arugments echo $ and a, so it can not resolve the a as you might imagine.
+
+(51) Run
+
+     set a\b hello
+     echo $ab$a\b
+
+     it will show:
+     hellohello
+     Program was successful
+
+     This is because when set a\b my parsing function will turn it into just ab, so when you enter echo $ab$a\b they are boty execute $ab
+     
+(52) Run
+
+     set b "hello
+
+     then it will show:
+     Please have an unclosed quotation
+
+     This is because every time before I set variable I will check the argument like in step 2, so for set b "hello it do not have a balance quotation, so it will have a alert not have an unclosed quotation.
+
+(53) Run
+
+     set a hello
+     set $a $a
+
+     then:
+     echo $a 
+
+     it will show:
+
+     Variable format is illegal
+
+     This is because, my implementation will check if variable argument is legal, so when variable name include illegal name '$', myshell will not set that.
+(54) Run
+
+     set s set
+     $s c hello
+     then:
+     echo $c
+     
+     then it will show:
+     hello
+     Program was successful
+
+     this is because when you set s set, s will change to set, then when you use $s c hello, you are actually execute set c hello, so when you ehco $c it will show hello accordingly.My implementation will not check the first argument, it will only check variable name, so '$s' means set
+     
+(55) Run
+
+     set a hello
+     echo $a
+     set a world
+     echo $a
+
+     it will show:
+     hello
+     program was successful
+     world
+     program was successful
+
+     This is because even though you set a equals hello you can still change a by setting a equals to world and it will change it
+     
+(56) Run
+
+     set b "he\llo\\\""
+     then:
+
+     echo $b$\b
+
+     it will shows:
+     "he\llo\\\"""he\llo\\\""
+     Program was successful
+
+     This is because for the first step you set b equals to "he\llo\\\"", then you execute echo $b$\b, at first glance you may think it will set b "hello\llo\"", because of the step2(which I parse the commands), but I wirte another parse function in the setvar function in which it will copy all the characters in the command regardless of step2(but the variable will change by step 2).So when I set variable values, variable will change according to step2, but values will not change.
+     For the second $\b it will parse$\b to $b which is the same with $b.
+
+(57) Run
+
+     set a hello
+     set b $a
+     then:
+     echo $a
+     
+     then it will show:
+     $a
+     this is correct because according to last testcase, even though set a hello will change a into hello, but for commands set b $a, it will not parse the $a according to the Readme, so I just set all the rest of the command line to b, so b equals to $a
+
+(58) Run
+
+     set a hello
+     env
+
+     it will show all the environment parameter but you cannot find a=hello
+
+     This is because before you export into the environment it will not show up.
+     
+(59) Run
+
+     set a hello
+     export a
+     then:
+     env
+
+     it will show all the environment parameter also include a=hello
+
+     This is because I implement env command to show all the environments,so after I export a into the environment, I execute env and then it will show all the environment parameters
+
+(60) Run
+
+     export a helloworld
+
+     then it will show:
+     Not legal format for export
+
+     This is because for export command should only have one parameter, so if you have two or more it is not legal, and also no parameter is not legal.
+
+(61) Run
+
+     set a hello
+     export a
+     env
+     set a b
+     env
+
+     it will show:
+     The first env you will find a environment parameter equal to hello, the second you will also find that a equals to hello, this is because after you set a equals to b, but you do not export a into environment so you execute env it only shows a equals to hello but not change it.
+
+(62) Run
+     
+     set a hello
+     rev a
+
+     then :
+     env
+
+     after you execute env you can not find a in the environment parameters, this is because you not export a
+
+(63) Run
+
+     set a hello
+     export a
+     rev a
+     export a
+     
+     then:
+     env
+     it will show a=olleh
+
+     this is because you export it into the environment and then you can reverse it with reverse command, and after that you should still export a into environment and then execute env you could find it is reversed.
+
+(64) Run
+
+     rev h
+
+     it will show:
+     There is no such variable
+
+     This is because you could not reverse variable not exits.
+
+(65) Run
+
+     set a hello
+     rev a hsd
+
+     it will shows:
+     Please enter correct nums of parameter
+
+     This is because you only could contain at maximum 2 parameter to reverse a variable.
+
+(66) Run
+
+     set PATH hello
+     export PATH
+
+     then :
+     /usr/bin/env
+     ls
+
+     it will show the content in this directory and environment parameters 
+
+     You will see all the environment parameters including PATH =dhs, and also you can run ls, this is because myshell would only search ECE551PATH, so even if you change the PATH parameter it still can work, but as following testcases if you change ECE551PATH, myshell will change another directory and search in it.
+     
+For these following step every time you set ECE551PATH, you should exit myshell and reopen it again because it will change the ECE551PATH
+
+(67) Run
+
+     set ECE551PATH hello
+     export ECE551PATH
+     ls
+     
+     then it will show:
+     ls not found
+     
+     this is because when you set ECE551PATH to hello and export it, the environment parameter will change , so when you execute ls, it will find ls in a , so it cannot find ls. And also when you execute /usr/bin/env it will show all the environment parameter, you can find ECE551PATH=hello.
+
+(68) Run
+
+     set ECE551PATH hello
+     export ECE551PATH
+     /bin/ls
+
+     then it will show:
+     all the content in the directory
+
+     This is because /bin/ls is full path command, so even though I change the ECE551PATH, it would not search command in it, it can directly execute /bin/ls.
+     
+
+(69) Run
+     set ECE551PATH hello
+     export ECE551PATH
+
+     then:
+     /usr/bin/env
+
+     it will show:
+     ECE551PATH=hello
+
+     this is because the full path for env command is /usr/bin/env, so when you execute /usr/bin/env, it will show all the environment parameters and you can see ECE551PATH=hello
+
+(70) Run
+     set ECE551PATH /home/cy146/ece551/mp_miniproject
+     export ECE551PATH
+     cd ~
+     then:
+     seg
+
+     it will show:
+     Terminated by signal 11
+
+     This is because when I set ECE551PATH and export it, myshell will change the content to search for command. So when I change directory to home directory, it could execute seg, which is a executable program in mp_miniproject folder
+     

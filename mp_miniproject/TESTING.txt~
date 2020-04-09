@@ -1,0 +1,37 @@
+I have already done some of the part 2 and part 3, so I wish they will not be graded. 
+
+(1) Run
+    You will see the shell is waiting for your input
+
+(2) Run
+    /bin/ls
+    You will see the content in this directory and also the ouput :"Program was successful"
+    This is because /bin/ls is an absoulte path so it will show the content of this directory
+(3) Run
+    nothing
+    For this step, you just input nothing and press enter, you will see nothing happen,it will show ffosh:/home/cy146/ece551/mp_miniproject$ again and wait for your input
+    This is because nothing will be execute
+(4) Run
+    space
+    For this step you need to enter some space character in the shell and you will find it will do nothing and re-output the prompt again and wait for your input
+    This is because after you input only space, they will be treat as you input nothing
+
+(5) Run
+    erejiwoefe
+    This step, you need to enter some odd thing
+    it will show erejiwoefe not find and wait for your input again
+
+(6) Run
+    exit
+    this step you need to enter the exit to exit the program 
+    after you enter the exit the program will exit successfully
+
+(7) Run
+    ./shell
+    this step you need execute ./shell
+    it will show Terminated by signal 0
+    this is because you can not execute this program another time
+(8) Run
+    ./a.out 2
+    for this step you execute the program write by myself
+    you will get "There are total 2 arguments Program was successful" and wait for input again

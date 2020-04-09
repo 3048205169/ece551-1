@@ -1,0 +1,356 @@
+#include <cstdlib>
+#include "myShell.h"
+#include <iostream>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <string>
+#include <fstream>
+#include <algorithm>
+#include <cstring>
+#include <vector>
+void myShell::printPrompt(){
+  std::string currDir=getenv("PWD");
+  std::cout<<"ffosh:"<<currDir<<"$";
+}
+std::string readLine(){
+  std::string line;
+  std::getline(std::cin,line);
+  return line;
+}
+//getArgv from each line
+void myShell::getArgv(std::string & line){
+  //this temp is used to store value                                            
+  std::string temp;
+  for(unsigned i=0;i<line.size();i++){
+    if(line[i]!=' '&&line[i]!='\\'){
+      temp+=line[i];
+    }
+    //check when line[i] is a space if line[i-1] is '\', then add a space
+    if(line[i]==' '){
+      if(line[i-1]=='\\'){
+	temp+=' ';
+      }
+    }
+    //check if line is not space or '\' be ready for push the temp
+    if(line[i]!=' '&&line[i]!='\\'){
+      if(line[i+1]==' '){                                                
+        //if temp is not null then push that in the vector                      
+        argvPara.push_back(temp);
+	temp.clear();
+      }                                                                     
+    }
+    if(line[i]==' '&&line[i-1]==' '&&line[i-2]=='\\'){
+      argvPara.push_back(temp);
+        temp.clear();
+    }
+  }
+  //if there is no '', add temp to the argv                                   
+  if(!temp.empty()){
+    argvPara.push_back(temp);
+  }
+}
+char ** myShell::vectorToArray(){
+	int vectorSize=argvPara.size();
+	//generate a char pointer array to store the parameter size equal to size of argvpara vector plus 1
+	char **argv=new char *[vectorSize+1](); 
+	//this int used for record the index of array
+	int index=0;
+	for(std::vector<std::string>::iterator it=argvPara.begin();it != argvPara.end();it++){
+		//for each element in the array allocate space for them;
+		argv[index]=new char[(*it).size()+1];
+		argv[index]=strncpy(argv[index],(*it).c_str(),(*it).size()+1);
+		index++;
+	}
+	//execve need the last one should be NULL
+	argv[index]=NULL;
+	return argv;
+
+}
+void myShell::getEnvir(){
+	std::string envirPath=getenv("PATH");
+	//this temp variable is used to store each path in the ECE551PATH
+	std::string temp;
+	for(unsigned i=0;i<envirPath.size();i++){
+		//check if it is ":"
+		if(envirPath[i]!=':'){
+			//if not ":" add to the temp
+			temp+=envirPath[i];
+		}
+		else{
+			envirPara.push_back(temp);
+			temp.clear();
+		}
+	}
+}
+bool myShell::searchCommand(std::string &command){
+	//found is used to record if it has command
+	bool found = false;
+	//check if it contain /
+	if(command.find('/')!=std::string::npos){
+		//we can use ifstream to check if it is a valid
+		std::ifstream ifs(command.c_str());
+		if (ifs.good()) {
+		  found = true;
+		}
+	}
+	//if command is not full path
+	else{
+	  //check each environment to see whelther it contain command
+	  for(unsigned i=0;i<envirPara.size();i++){
+	    std::string fullpath=envirPara[i]+'/'+command;
+	    //use ifstream to check if it is a valid command
+	    std::ifstream ifs(fullpath.c_str());
+	    if(ifs.good()){
+	      found=true;
+	      //change the command to the full path
+	      command=fullpath;
+	    }
+	  }
+	}
+	return found;
+}
+void myShell::changeDir(){
+  //check if this command is a cd command if not do noting
+  if(argvPara[0]=="cd"){
+    if(argvPara.size()!=2){
+      std::cerr<<"Command is not correct"<<std::endl;
+    }
+    if(argvPara.size()==2){
+      if(argvPara[1]=="~"){
+	if(chdir(getenv("HOME"))!=0){
+	  std::cerr<<"Change directory failure"<<std::endl;
+	}
+      }
+      //if command has two parameter then change the directory
+      else{
+	if(chdir(argvPara[1].c_str())!=0){
+	  //check if change dir success
+	  std::cerr<<"Change directory failor"<<std::endl;
+	}
+      }
+      /*
+      //set the oldpwd to pre
+      if(setenv("OLDPWD", getenv("PWD"), 1)){
+	std::cerr<<"set OLDPWD error"<<std::endl;
+	}*/
+      char cwd[1000];
+      getcwd(cwd, 1000);
+      //set PWD to currDir to make sure 
+      if(setenv("PWD", cwd, 1)){
+	std::cerr<<"set OLDPWD error"<<std::endl;
+      }
+    }
+  }
+}
+bool myShell::checkVar(){
+  bool valid=true;
+  std::string temp=argvPara[1];
+  for(unsigned i=0;i<temp.size();i++){
+    //check if var is valid
+    if(temp[i]!='_'&&(isalnum(temp[i])==0)){
+      valid=false;
+      return valid;
+    }
+  }
+  return valid;
+}
+void myShell::exportVar(){
+  if(argvPara.size()!=2){
+    std::cerr<<"Export format is not correct"<<std::endl;
+  }
+  else{
+    std::string temp=argvPara[1];
+    //if format is correct then set it into environment
+    if(setenv(temp.c_str(),vars[temp].c_str(),1)!=0){
+      std::cerr<<"Set environment failure"<<std::endl;
+    }
+    //used for test
+    /* std::string path;
+    const char* path2=temp.c_str();
+    path=getenv(path2);
+    std::cout<<"huanjingbianle"<<path<<std::endl;
+    */
+  }
+}
+void myShell::setVar(){
+  if(checkVar()){
+    //check if this command is a set command else do nothing
+    if(argvPara[0]=="set"){
+      //check if set command is valid
+      if(argvPara.size()!=3){
+	std::cerr<<"Command is not correct"<<std::endl;
+      }
+      //if valid store the var and variable into the mycommand map
+      vars.insert(std::pair<std::string,std::string>(argvPara[1],argvPara[2]));
+    }
+  }
+  else{
+    std::cerr<<"Variable format is illegal"<<std::endl;
+  }
+}
+
+//spiltstring function is used for split the string with $
+void spiltString(std::string string,std::vector<std::string> &vec){
+  char delimiter = '$';
+  //prev used to record which position is in, pos record the position $
+  size_t prev = 0;
+  size_t pos=0;
+  std::string token;
+  while(pos<string.size()&&prev<string.size()){
+    pos = string.find(delimiter, prev);
+    if (pos == std::string::npos) {
+      pos = string.size();
+    }
+    std::string token = string.substr(prev, pos-prev);
+    if (!token.empty()) {
+      vec.push_back(token);
+    }
+    prev = pos + 1;
+  }
+}
+void myShell::findVar(){
+  for(unsigned i=0;i<argvPara.size();i++){
+    std::vector<std::string> line;
+    spiltString(argvPara[i],line);
+    std::string token;
+    for(unsigned j=0;j<line.size();j++){
+      //store the each line vector element
+      std::string lineTemp=line[j];
+      //store the variable
+      std::string temp;
+      for(unsigned p=0;p<lineTemp.size();p++){
+	if(lineTemp[p]!='_'||(isalnum(lineTemp[p])!=0)){
+	  temp+=lineTemp[p];
+	}
+	else{
+	  if(!temp.empty()){
+	    std::map<std::string,std::string>::iterator it=vars.find(temp);
+	    if(it!=vars.end()){
+	      temp=it->second;
+	      temp+=lineTemp.substr(p,std::string::npos);
+	      line[j]=temp;
+	      break;
+	    }
+	    std::cout<<"zhaodaomeia"<<line[j]<<std::endl;
+	  }
+	  //else do nothing such as $_
+	}
+	
+      }
+      
+    }
+    for(unsigned j =0;j<line.size();j++){
+      token+=line[j];
+    }
+    
+    argvPara[i]=token;
+    std::cout<<"newargv"<<argvPara[i]<<std::endl;
+  }
+  
+}  
+
+void myShell::revVar(){
+  for(std::map<std::string,std::string>::iterator it=vars.begin(); it!=vars.end(); ++it){
+    if((it->second)==argvPara[1]){
+      std::reverse((it->second).begin(),(it->second).end());
+      return;
+    }
+  }
+  std::cerr<<"There is no such variable"<<std::endl;
+}
+
+int myShell::launch(std::string & line){
+  pid_t pid,wpid;
+  int status;
+  char ** argvFinal;
+  //search command                                                        
+  if(searchCommand(argvPara[0])==false){
+    std::cerr<<line<<"not found"<<std::endl;
+    exit(EXIT_FAILURE);
+  }
+  //convert the vector to array
+  argvFinal=vectorToArray();
+  
+  char *envir[]={NULL};
+  pid=fork();
+  if(pid==0){
+    //child process
+    if(execve(argvFinal[0],argvFinal,envir)==-1){
+      std::cerr<<"Execute Error"<<std::endl;
+      exit(EXIT_FAILURE);//need exit to exit the shell
+    }
+    
+  }
+  else if(pid<0){
+    //Error forking
+    std::cerr<<"Forking Error"<<std::endl;
+  }
+  else{
+    //parent process
+    do {
+      wpid = waitpid(pid, &status, WUNTRACED);
+      if(wpid==-1){
+	std::cerr<<"waitpid"<<std::endl;
+	exit(EXIT_FAILURE);
+      }
+     	 	else if(WIFEXITED(status)){
+		  std::cout<<"Program exited with status "<<WEXITSTATUS(status)<<std::endl;
+     	 	}
+     	 	else if(WIFSIGNALED(status)){
+		  std::cout<<"Program was killed by signal  "<<WTERMSIG(status)<<std::endl;
+     	 	}
+    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+  }
+  return 1;
+}
+//execute function is used to run the shell
+void myShell::execute(){
+  std::string line;
+  while(true){
+    //obtain the current directory and print the prompt
+    printPrompt();
+    //read the line from the user
+    std::string line=readLine();
+    //initialize the envirPara in myshell
+    getEnvir();
+    //initialize the argcpara in myshell
+    getArgv(line);
+    //replace the command with variable
+     findVar();
+    std::cout<<"argv"<<argvPara[0]<<std::endl;
+    //check if command is exit or EOF
+    if(line=="exit"){
+      exit(EXIT_FAILURE);
+    }
+    //check if command is cd
+    else if(argvPara[0]=="cd"){
+      changeDir();
+    }
+    //check if command is set
+    else if(argvPara[0]=="set"){
+      setVar();
+    }
+    //check if command is export
+    else if(argvPara[0]=="export"){
+      exportVar();
+    }
+    //check if command is rev
+    else if(argvPara[0]=="rev"){
+      revVar();
+    }
+    else{
+      launch(line);
+    }
+    //clear the argv vector
+    clearArgv();
+  }
+}
+
+int main(int argc, char *argv[],char *envp[]) {
+  //
+    myShell shell;
+    shell.execute();
+    return EXIT_SUCCESS;
+   
+}

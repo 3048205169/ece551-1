@@ -1,0 +1,5 @@
+int main(){
+  str="GTDGJ";
+  *(str+1)='n';
+  return 0;
+}
