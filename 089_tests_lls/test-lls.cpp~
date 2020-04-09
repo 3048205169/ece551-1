@@ -1,0 +1,186 @@
+#include<assert.h>
+#include<cstdlib>
+#include"il.h"
+
+void testList(void){
+  //default constructor dectect
+  IntList a;
+   assert(a.head==NULL);
+   assert(a.tail==NULL);
+   assert(a.size==0);
+   assert(!a.remove(3));
+   assert(a.getSize() == 0);
+   IntList list3 = a;
+   assert(list3.size == 0);
+   assert(list3.head == NULL);
+   assert(list3.tail == NULL);
+   //add front dectect
+   a.addFront(1);
+   assert(a.head->data==1);
+   assert(a.size==1);
+   a.addFront(2);
+   assert(a.head->data==2);
+   assert(a.size==2);
+   assert(a.tail->data==1);
+   a.addFront(3);
+   assert(a.size==3);
+   assert(a.head->data==3);
+   assert(a.tail->data==1);
+   assert(a.find(1)==2);
+   assert(a.find(3)==0);
+   assert(a.find(-1) == -1);
+   //add back dectect
+   IntList list2;
+   for (int i = 0; i < 10; i++) {
+     list2.addBack(i);
+   }
+   for (int i = 0; i < 10; i++) {
+     if (list2[i] != i) {
+       assert(0);
+     }
+   }
+   a=list2;
+   assert(a[0]==0);
+   list2[1] = 10;
+  assert(list2[1] == 10);
+  assert(list2.head->next->data == 10);
+  list2[1] = 1;
+  assert(list2.size == 10);
+  assert(list2.getSize() == 10);
+  IntList list1 = list2;
+  list1 = list1;
+  for (int i = 0; i < 10; i++) {
+    if (list1[i] != i) {
+      assert(0);
+    }
+  }
+   assert(list2.find(0)==0);
+   assert(list2.find(9)==9);
+   //add back dectect
+   a.addBack(4);
+   assert(a.size==4);
+   assert(a.tail->data==4);
+   assert(a.head->data==3);
+   a.addBack(5);
+   assert(a.size==5);
+   assert(a.tail->data==5);
+   assert(a.head->data==3);
+   //remove
+   IntList d;
+   d.addFront(2);
+   d.addFront(1);
+   assert(d.remove(1));
+   assert(d.getSize()==1);
+   assert(d.head->data==2);
+   assert(d.tail->data==2);
+   d.remove(2);
+   assert(d.getSize()==0);
+   assert(d.head==NULL);
+   assert(d.tail==NULL);
+   //copy constructor
+   IntList list;
+   IntList list11(list);
+   assert(list11.size == 0);
+   assert(list11.head == NULL);
+   assert(list11.tail == NULL);
+   list2[1] = 10;
+   assert(list2[1] == 10);
+   assert(list2.head->next->data == 10);
+   list2[1] = 1;
+   assert(list2.size == 10);
+   assert(list2.getSize() == 10);
+   IntList list12 = list2;
+   for (int i = 0; i < 10; i++) {
+     if (list12[i] != i) {
+       assert(0);
+     }
+   }
+   IntList b(a);
+   assert(b.size==5);
+   assert(b.tail->data==5);
+   assert(b.head->data==3);
+   //operator constructor
+   IntList c=a;
+   IntList l3=list;
+   assert(l3.size == 0);
+   assert(l3.head == NULL);
+   assert(c.size==5);
+   assert(c.tail->data==5);
+   assert(c.head->data==3);
+   //get size
+   assert(a.getSize()==5);
+   //remove
+   a.remove(5);
+   assert(a.tail->data==4);
+   assert(a.head->data==3);
+   //[]
+   assert(a[0]==3);
+   assert(a[1]==2);
+   assert(a[2]==1);
+    IntList list20;
+  list20.addFront(4);
+  list20.addFront(3);
+  list20.addFront(2);
+  list20.addFront(1);
+  list20.addFront(0);
+  assert(list20.find(3) == 3);
+  assert(list20.size == 5);
+  assert(list20.head->data == 0);
+  assert(list20.tail->data == 4);
+
+  for (int i = 0; i < 5; i++) {
+    if (list20[i] != i)
+      assert(0);
+  }
+
+  list20.remove(3);
+  assert(list20.size == 4);
+  assert(list20.getSize() == 4);
+
+  //-----------------------
+  IntList list30;
+  list30.addFront(1);
+  list30.addFront(1);
+  list30.addFront(1);
+  assert(list30.head->next->next == list30.tail);
+  assert(list30.find(2) == -1);
+  assert(list30.head->data == 1);
+  assert(list30.tail->data == 1);
+
+  for (int i = 0; i < 3; i++) {
+    if (list30[i] != 1)
+      assert(0);
+  }
+
+  list30.remove(1);
+  assert(list30.size == 2);
+  assert(list30.getSize() == 2);
+   IntList list40;
+   list40.addBack(0);
+   list40.addBack(1);
+   list40.addBack(2);
+   list40.remove(1);
+   assert(list40.head->data == 0);
+   assert(list40.tail->data == 2);
+   assert(list40.getSize() == 2);
+   assert(list40.size == 2);
+   assert(list40.head->next == list40.tail);
+   assert(list40.tail->prev == list40.head);
+   IntList list50;
+   list50.addBack(0);
+   list50.addBack(1);
+   list50.addBack(2);
+   
+   list50.remove(2);
+   assert(list50.head->data == 0);
+   assert(list50.tail->data == 1);
+   assert(list50.getSize() == 2);
+   assert(list50.size == 2);
+   assert(list50.head->next == list50.tail);
+   assert(list50.tail->prev == list50.head);
+   assert(list50.head->next->next == NULL);
+}
+int main(void) {
+  testList();
+  return EXIT_SUCCESS;
+}
