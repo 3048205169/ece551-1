@@ -1,0 +1,21 @@
+Grading at 09/19/2019:13:59:40.382067
+For commit ID e4f9b215daec141a3c4fb796f97003eb34978d1d
+Grading at Thu Sep 19 09:59:40 EDT 2019
+Attempting to compile  reverse.c
+Your file matched the expected output
+Your output matched what we expected
+Removing your main() and replacing it with our own to run more tests...
+#################################################
+testcase2:
+your code passed the testcase
+#################################################
+testcase3:
+Your file matched the expected output
+#################################################
+testcase4:
+Your file matched the expected output
+#################################################
+testcase5:
+Your file matched the expected output
+
+Overall Grade: A
